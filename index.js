@@ -5,6 +5,8 @@ const fs = require("fs");
 const path = require("path");
 const pathToFile = path.resolve("./data.json");
 
+
+
 const getResources = () => JSON.parse(fs.readFileSync(pathToFile))
 
 app.use(express.json());
@@ -12,9 +14,12 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello World")
 })
-app.get("/api/resources", (req, res) => {
+
+app.get("/api/resources/:id", (req, res) => {
   const resources = getResources();
-  res.send(resources);
+  const{id} = req.params;
+  const resource = resources.find(resource =>resource.id==id);
+  res.send(resource);
 })
 
 app.post("/api/resources", (req, res) => {
